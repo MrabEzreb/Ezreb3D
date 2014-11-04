@@ -12,7 +12,15 @@ public class Grid extends Cube {
 	String[][][][] grid = new String[8][size][size][size];
 	
 	public void addCube(Cube cube, XYZPoint point) {
-		
+		for(int x = 0; x <= cube.getxLength(); x++) {
+			for(int y = 0; y <= cube.getyLength(); y++) {
+				for(int z = 0; z <= cube.getzLength(); z++) {
+					int x = point.getX()+x;
+					XYZPoint newPoint = new XYZPoint(x, y, z);
+					this.addPoint(newPoint, cube.getName());
+				}
+			}
+		}
 	}
 	public void addPoint(XYZPoint newPoint, String name) {
 		int x = newPoint.getX();
