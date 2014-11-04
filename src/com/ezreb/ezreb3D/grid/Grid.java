@@ -1,6 +1,10 @@
 package com.ezreb.ezreb3D.grid;
 
+import java.awt.Frame;
+import java.awt.Graphics2D;
+
 import com.ezreb.ezreb3D.Cube;
+import com.ezreb.ezreb3D.Window;
 import com.ezreb.ezreb3D.XYZPoint;
 
 public class Grid extends Cube {
@@ -10,13 +14,24 @@ public class Grid extends Cube {
 	}
 	int size;
 	String[][][][] grid = new String[8][size][size][size];
-	
+	public void viewGrid() {
+		Frame grid = Window.create();
+		grid.setSize(size*2,size*2);
+		grid.setVisible(true);
+		Graphics2D graph = (Graphics2D) grid.getGraphics();
+		
+	}
+	public XYZPoint getCoords(XYZPoint point3d) {
+		
+	}
 	public void addCube(Cube cube, XYZPoint point) {
 		for(int x = 0; x <= cube.getxLength(); x++) {
 			for(int y = 0; y <= cube.getyLength(); y++) {
 				for(int z = 0; z <= cube.getzLength(); z++) {
-					int x = point.getX()+x;
-					XYZPoint newPoint = new XYZPoint(x, y, z);
+					int x1 = point.getX()+x;
+					int y1 = point.getY()+y;
+					int z1 = point.getZ()+z;
+					XYZPoint newPoint = new XYZPoint(x1, y1, z1);
 					this.addPoint(newPoint, cube.getName());
 				}
 			}
