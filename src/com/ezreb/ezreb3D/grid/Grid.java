@@ -19,10 +19,65 @@ public class Grid extends Cube {
 		grid.setSize(size*2,size*2);
 		grid.setVisible(true);
 		Graphics2D graph = (Graphics2D) grid.getGraphics();
-		
+		graph.drawRect(0, 0, 5, 5);
 	}
-	public XYZPoint getCoords(XYZPoint point3d) {
-		
+	public XYZPoint getCoords(XYZPoint point3d, String direction) {
+		XYZPoint retVal = new XYZPoint();
+		int xVal=0;
+		int yVal=0;
+		int zVal=0;
+		if(direction=="z") {
+			int x = point3d.getX();
+			int y = point3d.getY();
+			int z = point3d.getZ();
+			if(Math.abs(x)==x) {
+				if(Math.abs(y)==y) {
+					if(Math.abs(z)==z) {
+						xVal = x+size;
+						yVal = y+size;
+						zVal = z+size;
+					} else {
+						xVal = x+size;
+						yVal = y+size;
+						zVal = size-z;
+					}
+				} else {
+					if(Math.abs(z)==z) {
+						xVal = x+size;
+						yVal = size-y;
+						zVal = z+size;
+					} else {
+						xVal = x+size;
+						yVal = size-y;
+						zVal = size-z;
+					}
+				}
+			} else {
+				if(Math.abs(y)==y) {
+					if(Math.abs(z)==z) {
+						xVal = size-x;
+						yVal = size+y;
+						zVal = size+z;
+					} else {
+						xVal = size-x;
+						yVal = size+y;
+						zVal = size-z;
+					}
+				} else {
+					if(Math.abs(z)==z) {
+						xVal = size-x;
+						yVal = size-y;
+						zVal = size+z;
+					} else {
+						xVal = size-x;
+						yVal = size-y;
+						zVal = size-z;
+					}
+				}
+			}
+		}
+		retVal.setAll(xVal, yVal, zVal);
+		return retVal;
 	}
 	public void addCube(Cube cube, XYZPoint point) {
 		for(int x = 0; x <= cube.getxLength(); x++) {

@@ -6,6 +6,12 @@ public class XYZPoint {
 		Y = YValue;
 		Z = ZValue;
 	}
+	public XYZPoint() {}
+	public void setAll(int XValue, int YValue, int ZValue) {
+		X = XValue;
+		Y = YValue;
+		Z = ZValue;
+	}
 	int X;
 	int Y;
 	int Z;
