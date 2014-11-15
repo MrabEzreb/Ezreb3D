@@ -21,7 +21,7 @@ public class GridFrame extends Component {
 	/**
 	 * 
 	 */
-	public GridFrame(XYZPoint camPos, ) {
+	public GridFrame() {
 		
 	}
 

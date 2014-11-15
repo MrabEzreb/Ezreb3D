@@ -13,7 +13,7 @@ public class Grid extends Cube {
 		size = gridSize;
 	}
 	int size;
-	String[][][][] grid = new String[8][size][size][size];
+	public String[][][][] grid = new String[8][size][size][size];
 	public void viewGrid() {
 		Frame grid = Window.create();
 		grid.setSize(size*2,size*2);
