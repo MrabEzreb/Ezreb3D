@@ -2,7 +2,11 @@ package com.ezreb.ezreb3D.grid;
 
 import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 
+import aleksPack10.tools.Colors;
+
+import com.ezreb.ezreb3D.Camera;
 import com.ezreb.ezreb3D.Cube;
 import com.ezreb.ezreb3D.Window;
 import com.ezreb.ezreb3D.XYZPoint;
@@ -11,15 +15,46 @@ public class Grid extends Cube {
 	public Grid(XYZPoint point2, int gridSize, String name) {
 		super(point2, "Grid_"+name);
 		size = gridSize;
+		grid = new Cube[8][size][size][size];
 	}
 	int size;
-	public String[][][][] grid = new String[8][size][size][size];
-	public void viewGrid() {
+	public Cube[][][][] grid;
+	public void viewGrid() throws InterruptedException {
 		Frame grid = Window.create();
 		grid.setSize(size*2,size*2);
 		grid.setVisible(true);
 		Graphics2D graph = (Graphics2D) grid.getGraphics();
 		graph.drawRect(0, 0, 5, 5);
+		Camera c = new Camera(this, new XYZPoint(150, 150, 150), new XYZPoint(0, 0, 0));
+		Cube c2 = new Cube(new XYZPoint(50,50,50), "Cube1");
+		this.addCube(c2, new XYZPoint(0,0,0));
+		Polygon shape1 = c.getCubeShapes(c2);
+		graph.setColor(Colors.brown0);
+		graph.fillPolygon(shape1);
+		graph.setColor(Colors.green1);
+		graph.drawPolygon(shape1);
+		XYZPoint xp = c.getPoint(new XYZPoint(size,0,0));
+		XYZPoint xn = c.getPoint(new XYZPoint(-size,0,0));
+		XYZPoint yp = c.getPoint(new XYZPoint(0,size,0));
+		XYZPoint yn = c.getPoint(new XYZPoint(0,-size,0));
+		graph.drawLine(xp.getX(), xp.getY(), xn.getX(), xn.getY());
+		graph.drawLine(yp.getX(), yp.getY(), yn.getX(), yn.getY());
+		Thread.sleep(2000);
+		graph.clearRect(0, 0, 300, 300);
+		for (int i = 0; i < 45; i++) {
+			c = new Camera(this, new XYZPoint(150-i, 150, 150), new XYZPoint(i, 0, 0));
+			c2 = new Cube(new XYZPoint(50,50,50), "Cube1");
+			this.addCube(c2, new XYZPoint(0,0,0));
+			shape1 = c.getCubeShapes(c2);
+			graph.setColor(Colors.brown0);
+			graph.fillPolygon(shape1);
+			graph.setColor(Colors.green1);
+			graph.drawPolygon(shape1);
+			graph.drawLine(xp.getX(), xp.getY(), xn.getX(), xn.getY());
+			graph.drawLine(yp.getX(), yp.getY(), yn.getX(), yn.getY());
+			Thread.sleep(250);
+			graph.clearRect(0, 0, 300, 300);
+		}
 	}
 	public XYZPoint getCoords(XYZPoint point3d, String direction) {
 		XYZPoint retVal = new XYZPoint();
@@ -80,50 +115,40 @@ public class Grid extends Cube {
 		return retVal;
 	}
 	public void addCube(Cube cube, XYZPoint point) {
-		for(int x = 0; x <= cube.getxLength(); x++) {
-			for(int y = 0; y <= cube.getyLength(); y++) {
-				for(int z = 0; z <= cube.getzLength(); z++) {
-					int x1 = point.getX()+x;
-					int y1 = point.getY()+y;
-					int z1 = point.getZ()+z;
-					XYZPoint newPoint = new XYZPoint(x1, y1, z1);
-					this.addPoint(newPoint, cube.getName());
-				}
-			}
-		}
-	}
-	public void addPoint(XYZPoint newPoint, String name) {
-		int x = newPoint.getX();
-		int y = newPoint.getY();
-		int z = newPoint.getZ();
+		int x = point.getX();
+		int y = point.getY();
+		int z = point.getZ();
+		int q = 0;
 		if(Math.abs(x)==x) {
 			if(Math.abs(y)==y) {
 				if(Math.abs(z)==z) {
-					grid[1][x][y][z] = name;
+					q = 1;
 				} else {
-					grid[5][x][y][z] = name;
+					q = 5;
 				}
 			} else {
 				if(Math.abs(z)==z) {
-					grid[4][x][y][z] = name;
+					q = 4;
 				} else {
-					grid[8][x][y][z] = name;
+					q = 8;
 				}
 			}
 		} else {
 			if(Math.abs(y)==y) {
 				if(Math.abs(z)==z) {
-					grid[2][x][y][z] = name;
+					q = 2;
 				} else {
-					grid[6][x][y][z] = name;
+					q = 6;
 				}
 			} else {
 				if(Math.abs(z)==z) {
-					grid[3][x][y][z] = name;
+					q = 3;
 				} else {
-					grid[7][x][y][z] = name;
+					q = 7;
 				}
 			}
 		}
+		q = q-1;
+		grid[q][x][y][z] = cube;
 	}
 }

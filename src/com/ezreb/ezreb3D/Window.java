@@ -16,6 +16,7 @@ public class Window {
 		@Override
 		public void windowClosing(WindowEvent we) {
 			windo.dispose();
+			System.exit(0);
 		}
 	};
 }

@@ -5,8 +5,6 @@ package com.ezreb.ezreb3D.renderer;
 
 import java.awt.Component;
 
-import com.ezreb.ezreb3D.XYZPoint;
-
 /**
  * @author bram.zerbe
  *
