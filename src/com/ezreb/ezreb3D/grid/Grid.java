@@ -52,7 +52,7 @@ public class Grid extends Cube {
 			graph.drawPolygon(shape1);
 			graph.drawLine(xp.getX(), xp.getY(), xn.getX(), xn.getY());
 			graph.drawLine(yp.getX(), yp.getY(), yn.getX(), yn.getY());
-			Thread.sleep(250);
+			Thread.sleep(50);
 			graph.clearRect(0, 0, 300, 300);
 		}
 	}

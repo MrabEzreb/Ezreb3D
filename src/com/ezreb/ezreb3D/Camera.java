@@ -8,7 +8,7 @@ public class Camera extends XYZPoint {
 
 	public Camera(Grid grid, XYZPoint camPos, XYZPoint camRot) {
 		this.camPos = camPos;
-		this.camRot = camRot;
+		this.camRot = new XYZPoint(camRot.getZ(), camRot.getY(), camRot.getX())
 		int x = camPos.getX();
 		int y = camPos.getY();
 		int z = camPos.getZ();
@@ -91,16 +91,15 @@ public class Camera extends XYZPoint {
 		int x = point.getX()-this.camPos.getX();
 		int y = point.getY()-this.camPos.getY();
 		int z = point.getZ()-this.camPos.getZ();
-		XYZPoint camRot = this.camRot;
 		int ex = 0;
 		int ey = 0;
 		int ez = 100;
-		double cx = Math.cos(0-camRot.X);
-		double cy = Math.cos(0-camRot.Y);
-		double cz = Math.cos(0-camRot.Z);
-		double sx = Math.sin(0-camRot.X);
-		double sy = Math.sin(0-camRot.Y);
-		double sz = Math.sin(0-camRot.Z);
+		double cx = Math.cos(0-this.camRot.X);
+		double cy = Math.cos(0-this.camRot.Y);
+		double cz = Math.cos(0-this.camRot.Z);
+		double sx = Math.sin(0-this.camRot.X);
+		double sy = Math.sin(0-this.camRot.Y);
+		double sz = Math.sin(0-this.camRot.Z);
 		double dx = cy*((sz*y)+(cz*x))-(sy*z);
 		double dy = sx*((cy*z)+(sy*((sz*y)+(cz*x))))+(cx*((cz*y)-(sz*x)));
 		double dz = cx*((cy*z)+(sy*((sz*y)+(cz*x))))-(sx*((cz*y)-(sz*x)));
