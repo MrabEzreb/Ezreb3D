@@ -8,10 +8,12 @@ public class Camera extends XYZPoint {
 
 	public Camera(Grid grid, XYZPoint camPos, XYZPoint camRot) {
 		this.camPos = camPos;
-		this.camRot = new XYZPoint(camRot.getZ(), camRot.getY(), camRot.getX())
+		this.camRot = new XYZPoint(camRot.getX(), camRot.getY(), camRot.getZ());
+		this.grid = grid;
 		int x = camPos.getX();
 		int y = camPos.getY();
 		int z = camPos.getZ();
+		System.out.println("Created New Camera For Grid "+grid.getName()+" at coordinates "+x+","+y+","+z);
 		int q = 0;
 		if(Math.abs(x)==x) {
 			if(Math.abs(y)==y) {
@@ -89,11 +91,24 @@ public class Camera extends XYZPoint {
 	boolean[] axisRot = new boolean[6];
 	public XYZPoint getPoint(XYZPoint point) {
 		int x = point.getX()-this.camPos.getX();
+		if (Math.abs(x)!=x) {
+			x = -x;
+		}
 		int y = point.getY()-this.camPos.getY();
+		if (Math.abs(y)!=y) {
+			y = -y;
+		}
 		int z = point.getZ()-this.camPos.getZ();
-		int ex = 0;
-		int ey = 0;
-		int ez = 100;
+		if (Math.abs(z)!=z) {
+			z = -z;
+		}
+		System.out.println(x+","+y+","+z);
+		int ex = -this.camPos.getX();
+		int ey = -this.camPos.getY();
+		int ez = -this.camPos.getZ();
+		//int ex = (int) Math.floor(Math.sqrt(Math.pow(this.camPos.getX(), 2)+Math.pow(this.camPos.getY(), 2)+Math.pow(this.camPos.getZ(), 2)));
+		//int ey = (int) Math.floor(Math.sqrt(Math.pow(this.camPos.getX(), 2)+Math.pow(this.camPos.getY(), 2)+Math.pow(this.camPos.getZ(), 2)));
+		//int ez = (int) Math.floor(Math.sqrt(Math.pow(this.camPos.getX(), 2)+Math.pow(this.camPos.getY(), 2)+Math.pow(this.camPos.getZ(), 2)));
 		double cx = Math.cos(0-this.camRot.X);
 		double cy = Math.cos(0-this.camRot.Y);
 		double cz = Math.cos(0-this.camRot.Z);
@@ -105,7 +120,7 @@ public class Camera extends XYZPoint {
 		double dz = cx*((cy*z)+(sy*((sz*y)+(cz*x))))-(sx*((cz*y)-(sz*x)));
 		int bx = (int) Math.floor(((ez/dz)*dx)-ex);
 		int by = (int) Math.floor(((ez/dz)*dy)-ey);
-		XYZPoint retVal = new XYZPoint(bx, by, 0);
+		XYZPoint retVal = new XYZPoint(bx+grid.size+3, by+grid.size+25, 0);
 		return retVal;
 	}
 	public Polygon getCubeShapes(Cube c) {

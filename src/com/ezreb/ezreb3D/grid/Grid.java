@@ -17,44 +17,66 @@ public class Grid extends Cube {
 		size = gridSize;
 		grid = new Cube[8][size][size][size];
 	}
-	int size;
+	public int size;
 	public Cube[][][][] grid;
 	public void viewGrid() throws InterruptedException {
 		Frame grid = Window.create();
-		grid.setSize(size*2,size*2);
+		grid.setSize((size*2)+6,(size*2)+29);
 		grid.setVisible(true);
 		Graphics2D graph = (Graphics2D) grid.getGraphics();
 		graph.drawRect(0, 0, 5, 5);
-		Camera c = new Camera(this, new XYZPoint(150, 150, 150), new XYZPoint(0, 0, 0));
-		Cube c2 = new Cube(new XYZPoint(50,50,50), "Cube1");
-		this.addCube(c2, new XYZPoint(0,0,0));
-		Polygon shape1 = c.getCubeShapes(c2);
-		graph.setColor(Colors.brown0);
+		for (int i = -150; i < 151; i = i+4) {
+			Thread.sleep(200);
+			graph.clearRect(0,0,size*2+6,size*2+28);
+			Camera c = new Camera(this, new XYZPoint(i, 50, 50), new XYZPoint(0, 0, 0));
+			//Cube c2 = new Cube(new XYZPoint(75,75,50), "Cube1");
+			//this.addCube(c2, new XYZPoint(0,0,0));
+			//Polygon shape1 = c.getCubeShapes(c2);
+			XYZPoint xp = c.getPoint(new XYZPoint(size,0,0));
+			System.out.println("xp="+xp.getX()+","+xp.getY()+","+xp.getZ());
+			XYZPoint xn = c.getPoint(new XYZPoint(0-size,0,0));
+			xn.setAll(-xn.getX()+size*2+6, -xn.getY()+size*2+50, xn.getZ());
+			System.out.println("xn="+xn.getX()+","+xn.getY()+","+xn.getZ());
+			XYZPoint yp = c.getPoint(new XYZPoint(0,size,0));
+			XYZPoint yn = c.getPoint(new XYZPoint(0,0-size,0));
+			yn.setAll(-yn.getX()+size*2+6, -yn.getY()+size*2+50, yn.getZ());
+			XYZPoint zp = c.getPoint(new XYZPoint(0,0,size-(i/2)));
+			XYZPoint zn = c.getPoint(new XYZPoint(0,0,-size-(i/2)));
+			zn.setAll(-zn.getX()+size*2+6, -zn.getY()+size*2+50, zn.getZ());
+			graph.setColor(Colors.blue2);
+			graph.drawLine(xp.getX(), xp.getY(), xn.getX(), xn.getY());
+			graph.setColor(Colors.orange5);
+			graph.drawLine(yp.getX(), yp.getY(), yn.getX(), yn.getY());
+			graph.setColor(Colors.pink0);
+			graph.drawLine(zp.getX(), zp.getY(), zn.getX(), zn.getY());
+			graph.setColor(Colors.lightBlue0);
+			graph.drawString("+x", xp.getX(), xp.getY());
+			graph.drawString("-x", xn.getX(), xn.getY());
+			graph.drawString("+y", yp.getX(), yp.getY());
+			graph.drawString("-y", yn.getX(), yn.getY());
+			graph.drawString("+z", zp.getX(), zp.getY());
+			graph.drawString("-z", zn.getX(), zn.getY());
+		}
+		/*graph.setColor(Colors.brown0);
 		graph.fillPolygon(shape1);
 		graph.setColor(Colors.green1);
-		graph.drawPolygon(shape1);
-		XYZPoint xp = c.getPoint(new XYZPoint(size,0,0));
-		XYZPoint xn = c.getPoint(new XYZPoint(-size,0,0));
-		XYZPoint yp = c.getPoint(new XYZPoint(0,size,0));
-		XYZPoint yn = c.getPoint(new XYZPoint(0,-size,0));
-		graph.drawLine(xp.getX(), xp.getY(), xn.getX(), xn.getY());
-		graph.drawLine(yp.getX(), yp.getY(), yn.getX(), yn.getY());
-		Thread.sleep(2000);
-		graph.clearRect(0, 0, 300, 300);
-		for (int i = 0; i < 45; i++) {
-			c = new Camera(this, new XYZPoint(150-i, 150, 150), new XYZPoint(i, 0, 0));
-			c2 = new Cube(new XYZPoint(50,50,50), "Cube1");
-			this.addCube(c2, new XYZPoint(0,0,0));
-			shape1 = c.getCubeShapes(c2);
-			graph.setColor(Colors.brown0);
-			graph.fillPolygon(shape1);
-			graph.setColor(Colors.green1);
-			graph.drawPolygon(shape1);
-			graph.drawLine(xp.getX(), xp.getY(), xn.getX(), xn.getY());
-			graph.drawLine(yp.getX(), yp.getY(), yn.getX(), yn.getY());
-			Thread.sleep(50);
-			graph.clearRect(0, 0, 300, 300);
-		}
+		graph.drawPolygon(shape1);*/
+		//Thread.sleep(2000);
+		//graph.clearRect(0, 0, 300, 300);
+//		for (int i = 0; i < 45; i++) {
+//			c = new Camera(this, new XYZPoint(150-i, 150, 150), new XYZPoint(i, 0, 0));
+//			c2 = new Cube(new XYZPoint(50,50,50), "Cube1");
+//			this.addCube(c2, new XYZPoint(0,0,0));
+//			shape1 = c.getCubeShapes(c2);
+//			graph.setColor(Colors.brown0);
+//			graph.fillPolygon(shape1);
+//			graph.setColor(Colors.green1);
+//			graph.drawPolygon(shape1);
+//			graph.drawLine(xp.getX(), xp.getY(), xn.getX(), xn.getY());
+//			graph.drawLine(yp.getX(), yp.getY(), yn.getX(), yn.getY());
+//			Thread.sleep(50);
+//			graph.clearRect(0, 0, 300, 300);
+//		}
 	}
 	public XYZPoint getCoords(XYZPoint point3d, String direction) {
 		XYZPoint retVal = new XYZPoint();
