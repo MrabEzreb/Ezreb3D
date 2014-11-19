@@ -7,7 +7,9 @@ import com.ezreb.ezreb3D.grid.Grid;
 public class Camera extends XYZPoint {
 
 	public Camera(Grid grid, XYZPoint camPos, XYZPoint camRot) {
-		this.camPos = camPos;
+		this.camPos.X = camPos.getX();
+		this.camPos.Y = camPos.getY();
+		this.camPos.Z = -camPos.getZ();
 		this.camRot = new XYZPoint(camRot.getX(), camRot.getY(), camRot.getZ());
 		this.grid = grid;
 		int x = camPos.getX();
@@ -84,31 +86,20 @@ public class Camera extends XYZPoint {
 		this.rotQuadrant = q;
 	}
 	Grid grid;
-	XYZPoint camPos;
+	public XYZPoint camPos = new XYZPoint();
 	XYZPoint camRot;
 	int posQuadrant;
 	int rotQuadrant;
 	boolean[] axisRot = new boolean[6];
 	public XYZPoint getPoint(XYZPoint point) {
 		int x = point.getX()-this.camPos.getX();
-		if (Math.abs(x)!=x) {
-			x = -x;
-		}
 		int y = point.getY()-this.camPos.getY();
-		if (Math.abs(y)!=y) {
-			y = -y;
-		}
-		int z = point.getZ()-this.camPos.getZ();
-		if (Math.abs(z)!=z) {
-			z = -z;
-		}
+		int z = -point.getZ()-this.camPos.getZ();
 		System.out.println(x+","+y+","+z);
-		int ex = -this.camPos.getX();
-		int ey = -this.camPos.getY();
+		int ex = 0;
+		System.out.println("ex for the getpoint is "+ex);
+		int ey = 0;
 		int ez = -this.camPos.getZ();
-		//int ex = (int) Math.floor(Math.sqrt(Math.pow(this.camPos.getX(), 2)+Math.pow(this.camPos.getY(), 2)+Math.pow(this.camPos.getZ(), 2)));
-		//int ey = (int) Math.floor(Math.sqrt(Math.pow(this.camPos.getX(), 2)+Math.pow(this.camPos.getY(), 2)+Math.pow(this.camPos.getZ(), 2)));
-		//int ez = (int) Math.floor(Math.sqrt(Math.pow(this.camPos.getX(), 2)+Math.pow(this.camPos.getY(), 2)+Math.pow(this.camPos.getZ(), 2)));
 		double cx = Math.cos(0-this.camRot.X);
 		double cy = Math.cos(0-this.camRot.Y);
 		double cz = Math.cos(0-this.camRot.Z);
@@ -116,11 +107,13 @@ public class Camera extends XYZPoint {
 		double sy = Math.sin(0-this.camRot.Y);
 		double sz = Math.sin(0-this.camRot.Z);
 		double dx = cy*((sz*y)+(cz*x))-(sy*z);
+		System.out.println("dx for the getpoint is "+dx);
 		double dy = sx*((cy*z)+(sy*((sz*y)+(cz*x))))+(cx*((cz*y)-(sz*x)));
 		double dz = cx*((cy*z)+(sy*((sz*y)+(cz*x))))-(sx*((cz*y)-(sz*x)));
 		int bx = (int) Math.floor(((ez/dz)*dx)-ex);
 		int by = (int) Math.floor(((ez/dz)*dy)-ey);
-		XYZPoint retVal = new XYZPoint(bx+grid.size+3, by+grid.size+25, 0);
+		XYZPoint retVal = new XYZPoint(bx+grid.size+3, -by+grid.size+25, 0);
+		System.out.println("bx for the getpoint is "+bx);
 		return retVal;
 	}
 	public Polygon getCubeShapes(Cube c) {
@@ -129,7 +122,6 @@ public class Camera extends XYZPoint {
 		int[] xes = new int[24];
 		int[] ys = new int[24];
 		int currentPoint = 0;
-		//Boolean[] sides = new Boolean[6];
 		for (int i = 1; i < 7; i++) {
 			for (int j = 1; j < 5; j++) {
 				xyzs1[i-1][j-1] = c.allPoints[i][j];

@@ -25,35 +25,48 @@ public class Grid extends Cube {
 		grid.setVisible(true);
 		Graphics2D graph = (Graphics2D) grid.getGraphics();
 		graph.drawRect(0, 0, 5, 5);
-		for (int i = -150; i < 151; i = i+4) {
-			Thread.sleep(200);
+		for (int i = -102; i < 103; i++) {
+			if(i==0) {
+				continue;
+			} else if(i==1) {
+				continue;
+			}
+			Thread.sleep(50);
 			graph.clearRect(0,0,size*2+6,size*2+28);
-			Camera c = new Camera(this, new XYZPoint(i, 50, 50), new XYZPoint(0, 0, 0));
+			Camera c = new Camera(this, new XYZPoint(i, 50, 50), new XYZPoint(45, 0, 0));
 			//Cube c2 = new Cube(new XYZPoint(75,75,50), "Cube1");
 			//this.addCube(c2, new XYZPoint(0,0,0));
 			//Polygon shape1 = c.getCubeShapes(c2);
+			Cube c1 = new Cube(new XYZPoint(1, 1, 1), "Cube 1");
+			this.addCube(c1, new XYZPoint(0, 0, 0));
+			Polygon p1 = c.getCubeShapes(c1);
+			Cube c2 = new Cube(new XYZPoint(1, 1, 1), "Cube 1");
+			this.addCube(c2, new XYZPoint(-1, -1, -1));
+			Polygon p2 = c.getCubeShapes(c2);
+			int size = this.size;
 			XYZPoint xp = c.getPoint(new XYZPoint(size,0,0));
 			System.out.println("xp="+xp.getX()+","+xp.getY()+","+xp.getZ());
 			XYZPoint xn = c.getPoint(new XYZPoint(0-size,0,0));
-			xn.setAll(-xn.getX()+size*2+6, -xn.getY()+size*2+50, xn.getZ());
 			System.out.println("xn="+xn.getX()+","+xn.getY()+","+xn.getZ());
 			XYZPoint yp = c.getPoint(new XYZPoint(0,size,0));
 			XYZPoint yn = c.getPoint(new XYZPoint(0,0-size,0));
-			yn.setAll(-yn.getX()+size*2+6, -yn.getY()+size*2+50, yn.getZ());
-			XYZPoint zp = c.getPoint(new XYZPoint(0,0,size-(i/2)));
-			XYZPoint zn = c.getPoint(new XYZPoint(0,0,-size-(i/2)));
-			zn.setAll(-zn.getX()+size*2+6, -zn.getY()+size*2+50, zn.getZ());
+			XYZPoint zp = c.getPoint(new XYZPoint(0, 0, size));
+			XYZPoint zn = c.getPoint(new XYZPoint(0, 0, -size));
+			XYZPoint origin = c.getPoint(new XYZPoint(0,0,0));
 			graph.setColor(Colors.blue2);
-			graph.drawLine(xp.getX(), xp.getY(), xn.getX(), xn.getY());
+			graph.drawLine(xp.getX(), xp.getY(), origin.getX(), origin.getY());
+			graph.drawLine(xn.getX(), xn.getY(), origin.getX(), origin.getY());
 			graph.setColor(Colors.orange5);
-			graph.drawLine(yp.getX(), yp.getY(), yn.getX(), yn.getY());
+			graph.drawLine(yp.getX(), yp.getY(), origin.getX(), origin.getY());
+			graph.drawLine(yn.getX(), yn.getY(), origin.getX(), origin.getY());
 			graph.setColor(Colors.pink0);
-			graph.drawLine(zp.getX(), zp.getY(), zn.getX(), zn.getY());
+			graph.drawLine(zp.getX(), zp.getY(), origin.getX(), origin.getY());
+			graph.drawLine(zn.getX(), zn.getY(), origin.getX(), origin.getY());
 			graph.setColor(Colors.lightBlue0);
 			graph.drawString("+x", xp.getX(), xp.getY());
 			graph.drawString("-x", xn.getX(), xn.getY());
-			graph.drawString("+y", yp.getX(), yp.getY());
-			graph.drawString("-y", yn.getX(), yn.getY());
+			graph.drawString("+y", yp.getX(), yp.getY()+10);
+			graph.drawString("-y", yn.getX(), yn.getY()-3);
 			graph.drawString("+z", zp.getX(), zp.getY());
 			graph.drawString("-z", zn.getX(), zn.getY());
 		}
@@ -171,6 +184,9 @@ public class Grid extends Cube {
 			}
 		}
 		q = q-1;
+		x = Math.abs(x);
+		y = Math.abs(y);
+		z = Math.abs(z);
 		grid[q][x][y][z] = cube;
 	}
 }
