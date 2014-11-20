@@ -12,16 +12,18 @@ import com.ezreb.ezreb3D.Window;
 import com.ezreb.ezreb3D.XYZPoint;
 
 public class Grid extends Cube {
-	public Grid(XYZPoint point2, int gridSize, String name) {
-		super(point2, "Grid_"+name);
+	public Grid(XYZPoint point1, XYZPoint point2, int gridSize, String name, int windowsize) {
+		super(point1, point2, "Grid_"+name);
 		size = gridSize;
 		grid = new Cube[8][size][size][size];
+		this.wsize = windowsize;
 	}
 	public int size;
+	public int wsize;
 	public Cube[][][][] grid;
 	public void viewGrid() throws InterruptedException {
 		Frame grid = Window.create();
-		grid.setSize((size*2)+6,(size*2)+29);
+		grid.setSize((wsize*2)+6,(wsize*2)+29);
 		grid.setVisible(true);
 		Graphics2D graph = (Graphics2D) grid.getGraphics();
 		graph.drawRect(0, 0, 5, 5);
@@ -31,34 +33,40 @@ public class Grid extends Cube {
 			} else if(i==1) {
 				continue;
 			}
-			Thread.sleep(50);
-			graph.clearRect(0,0,size*2+6,size*2+28);
-			Camera c = new Camera(this, new XYZPoint(i, 50, 50), new XYZPoint(45, 0, 0));
-			//Cube c2 = new Cube(new XYZPoint(75,75,50), "Cube1");
+			System.out.println(i);
+			Camera c = new Camera(this, new XYZPoint(150, 0, 150), new XYZPoint(0, i, 0), new XYZPoint(0, 0, 0));
+			Cube c2 = new Cube(new XYZPoint(0, 0, 0), new XYZPoint(75,75,50), "Cube1");
 			//this.addCube(c2, new XYZPoint(0,0,0));
-			//Polygon shape1 = c.getCubeShapes(c2);
-			Cube c1 = new Cube(new XYZPoint(1, 1, 1), "Cube 1");
-			this.addCube(c1, new XYZPoint(0, 0, 0));
-			Polygon p1 = c.getCubeShapes(c1);
-			Cube c2 = new Cube(new XYZPoint(1, 1, 1), "Cube 1");
-			this.addCube(c2, new XYZPoint(-1, -1, -1));
-			Polygon p2 = c.getCubeShapes(c2);
+			Polygon[] shape1 = c.getCubeShapes(c2);
+			Cube c1 = new Cube(new XYZPoint(0, 0, 0), new XYZPoint(-10, -10, -10), "Cube 1");
+			//this.addCube(c1, new XYZPoint(0, 0, 0));
+			Polygon[] p1 = c.getCubeShapes(c1);
 			int size = this.size;
 			XYZPoint xp = c.getPoint(new XYZPoint(size,0,0));
-			System.out.println("xp="+xp.getX()+","+xp.getY()+","+xp.getZ());
+			//System.out.println("xp="+xp.getX()+","+xp.getY()+","+xp.getZ());
 			XYZPoint xn = c.getPoint(new XYZPoint(0-size,0,0));
-			System.out.println("xn="+xn.getX()+","+xn.getY()+","+xn.getZ());
+			//System.out.println("xn="+xn.getX()+","+xn.getY()+","+xn.getZ());
 			XYZPoint yp = c.getPoint(new XYZPoint(0,size,0));
 			XYZPoint yn = c.getPoint(new XYZPoint(0,0-size,0));
-			XYZPoint zp = c.getPoint(new XYZPoint(0, 0, size));
-			XYZPoint zn = c.getPoint(new XYZPoint(0, 0, -size));
+			XYZPoint zp = c.getPoint(new XYZPoint(0, 0, size-c.camPos.getZ()));
+			XYZPoint zn = c.getPoint(new XYZPoint(0, 0, -size-c.camPos.getZ()));
 			XYZPoint origin = c.getPoint(new XYZPoint(0,0,0));
+			Thread.sleep(500);
+			graph.clearRect(0,0,wsize*2+6,wsize*2+28);
+			graph.setColor(Colors.green1);
+			//this.fill3DPolygon(p1, graph);
+			//this.fill3DPolygon(shape1, graph);
+			graph.setColor(Colors.brown0);
+			//this.draw3DPolygon(shape1, graph);
+			//this.draw3DPolygon(p1, graph);
 			graph.setColor(Colors.blue2);
 			graph.drawLine(xp.getX(), xp.getY(), origin.getX(), origin.getY());
 			graph.drawLine(xn.getX(), xn.getY(), origin.getX(), origin.getY());
+			graph.drawLine(0, wsize+25, wsize*2+3, wsize+25);
 			graph.setColor(Colors.orange5);
 			graph.drawLine(yp.getX(), yp.getY(), origin.getX(), origin.getY());
 			graph.drawLine(yn.getX(), yn.getY(), origin.getX(), origin.getY());
+			graph.drawLine(wsize+3, 0+25, wsize+3, wsize*2+25);
 			graph.setColor(Colors.pink0);
 			graph.drawLine(zp.getX(), zp.getY(), origin.getX(), origin.getY());
 			graph.drawLine(zn.getX(), zn.getY(), origin.getX(), origin.getY());
@@ -90,6 +98,16 @@ public class Grid extends Cube {
 //			Thread.sleep(50);
 //			graph.clearRect(0, 0, 300, 300);
 //		}
+	}
+	private void fill3DPolygon(Polygon[] ps, Graphics2D g) {
+		for (Polygon polygon : ps) {
+			g.fillPolygon(polygon);
+		}
+	}
+	private void draw3DPolygon(Polygon[] ps, Graphics2D g) {
+		for (Polygon polygon : ps) {
+			g.drawPolygon(polygon);
+		}
 	}
 	public XYZPoint getCoords(XYZPoint point3d, String direction) {
 		XYZPoint retVal = new XYZPoint();

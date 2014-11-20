@@ -2,8 +2,21 @@ package com.ezreb.ezreb3D;
 
 
 public class Cube {
-	public Cube(XYZPoint point2, String name) {
-		firstPoint = new XYZPoint(0,0,0);
+	
+	/**
+	 * Side 1: +z
+	 * Side 2: +x
+	 * Side 3: +y
+	 * Side 4: -z
+	 * Side 5: -x
+	 * Side 6: -y
+	 * @author Mrab Ezreb
+	 * @param point1 top/forward/right point
+	 * @param point2 bottom/backward/left point
+	 * @param name the name of the cube
+	 */
+	public Cube(XYZPoint point1, XYZPoint point2, String name) {
+		firstPoint = point1;
 		secondPoint = point2;
 		xLength = -(firstPoint.X-point2.X);
 		yLength = -(firstPoint.Y-point2.Y);
