@@ -1,6 +1,11 @@
 package com.ezreb.ezreb3D;
 
 
+/**
+ * @deprecated
+ * @author Mrab Ezreb
+ *
+ */
 public class Cube {
 	
 	/**

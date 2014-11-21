@@ -27,14 +27,14 @@ public class Grid extends Cube {
 		grid.setVisible(true);
 		Graphics2D graph = (Graphics2D) grid.getGraphics();
 		graph.drawRect(0, 0, 5, 5);
-		for (int i = -102; i < 103; i++) {
+		for (int i = 0; i < 361; i = i+2) {
 			if(i==0) {
 				continue;
 			} else if(i==1) {
 				continue;
 			}
-			System.out.println(i);
-			Camera c = new Camera(this, new XYZPoint(150, 0, 150), new XYZPoint(0, i, 0), new XYZPoint(0, 0, 0));
+			System.out.println(i+"rot");
+			Camera c = new Camera(this, new XYZPoint(100, 100, 100), new XYZPoint(0, 0, 0), new XYZPoint(0, 0, 0));
 			Cube c2 = new Cube(new XYZPoint(0, 0, 0), new XYZPoint(75,75,50), "Cube1");
 			//this.addCube(c2, new XYZPoint(0,0,0));
 			Polygon[] shape1 = c.getCubeShapes(c2);
@@ -48,10 +48,10 @@ public class Grid extends Cube {
 			//System.out.println("xn="+xn.getX()+","+xn.getY()+","+xn.getZ());
 			XYZPoint yp = c.getPoint(new XYZPoint(0,size,0));
 			XYZPoint yn = c.getPoint(new XYZPoint(0,0-size,0));
-			XYZPoint zp = c.getPoint(new XYZPoint(0, 0, size-c.camPos.getZ()));
-			XYZPoint zn = c.getPoint(new XYZPoint(0, 0, -size-c.camPos.getZ()));
+			XYZPoint zp = c.getPoint(new XYZPoint(0, 0, size));
+			XYZPoint zn = c.getPoint(new XYZPoint(0, 0, -size));
 			XYZPoint origin = c.getPoint(new XYZPoint(0,0,0));
-			Thread.sleep(500);
+			Thread.sleep(50);
 			graph.clearRect(0,0,wsize*2+6,wsize*2+28);
 			graph.setColor(Colors.green1);
 			//this.fill3DPolygon(p1, graph);

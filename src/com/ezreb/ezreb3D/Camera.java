@@ -4,6 +4,10 @@ import java.awt.Polygon;
 
 import com.ezreb.ezreb3D.grid.Grid;
 
+/**
+ * @author bram.zerbe
+ *
+ */
 public class Camera extends XYZPoint {
 
 	public Camera(Grid grid, XYZPoint camPos, XYZPoint camRot) {
@@ -13,6 +17,15 @@ public class Camera extends XYZPoint {
 		this.camPos.X = camPos.getX();
 		this.camPos.Y = camPos.getY();
 		this.camPos.Z = -camPos.getZ();
+		if(focus.X==0) {
+			focus.X = camPos.X;
+		}
+		if(focus.Y==0) {
+			focus.Y = camPos.Y;
+		}
+		if(focus.Z==0) {
+			focus.Z = -camPos.getZ();
+		}
 		this.camFocus.X = camPos.X-focus.X;
 		this.camFocus.Y = camPos.Y-focus.Y;
 		this.camFocus.Z = camPos.Z-focus.Z;
@@ -20,7 +33,7 @@ public class Camera extends XYZPoint {
 		this.grid = grid;
 		int x = camPos.getX();
 		int y = camPos.getY();
-		int z = camPos.getZ();
+		int z = -camPos.getZ();
 		System.out.println("Created New Camera For Grid "+grid.getName()+" at coordinates "+x+","+y+","+z);
 		int q = 0;
 		if(Math.abs(x)==x) {
@@ -99,20 +112,26 @@ public class Camera extends XYZPoint {
 	int rotQuadrant;
 	boolean[] axisRot = new boolean[6];
 	public XYZPoint getPoint(XYZPoint point) {
+		if(point.getZ()<this.camPos.getZ()+1) {
+			point.Z = this.camPos.getZ()+1;
+		}
+		if(point.getZ()>-this.camPos.getZ()-1) {
+			point.Z = -this.camPos.getZ()+1;
+		}
 		int x = point.getX()-this.camPos.getX();
 		int y = point.getY()-this.camPos.getY();
-		int z = point.getZ()-this.camPos.getZ();
+		int z = point.getZ()-(this.camPos.getZ());
 		//System.out.println(x+","+y+","+z);
 		int ex = this.camFocus.getX();
 		//System.out.println("ex for the getpoint is "+ex);
 		int ey = this.camFocus.getY();
 		int ez = this.camFocus.getZ();
-		double cx = Math.cos(0-this.camRot.X);
-		double cy = Math.cos(0-this.camRot.Y);
-		double cz = Math.cos(0-this.camRot.Z);
-		double sx = Math.sin(0-this.camRot.X);
-		double sy = Math.sin(0-this.camRot.Y);
-		double sz = Math.sin(0-this.camRot.Z);
+		double cx = Math.cos(0-(this.camRot.X*(3.141592653F/180)));
+		double cy = Math.cos(0-(this.camRot.Y*(3.141592653F/180)));
+		double cz = Math.cos(0-(this.camRot.Z*(3.141592653F/180)));
+		double sx = Math.sin(0-(this.camRot.X*(3.141592653F/180)));
+		double sy = Math.sin(0-(this.camRot.Y*(3.141592653F/180)));
+		double sz = Math.sin(0-(this.camRot.Z*(3.141592653F/180)));
 		double dx = cy*((sz*y)+(cz*x))-(sy*z);
 		//System.out.println("dx for the getpoint is "+dx);
 		double dy = sx*((cy*z)+(sy*((sz*y)+(cz*x))))+(cx*((cz*y)-(sz*x)));
@@ -135,6 +154,12 @@ public class Camera extends XYZPoint {
 		//System.out.println("bx for the getpoint is "+bx);
 		return retVal;
 	}
+	
+	/**
+	 * @deprecated
+	 * @param c A cube
+	 * @return an array of polygons
+	 */
 	public Polygon[] getCubeShapes(Cube c) {
 		Polygon[] retVal = new Polygon[6];
 		XYZPoint[][] xyzs1 = new XYZPoint[6][4];
