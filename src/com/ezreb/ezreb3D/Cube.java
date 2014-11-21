@@ -46,6 +46,12 @@ public class Cube {
 		yFaces[1] = this.faces[3].p1.getY()-c.getY();
 		xFaces[0] = this.faces[4].p1.getX()-c.getX();
 		xFaces[1] = this.faces[5].p1.getX()-c.getX();
+		if(zFaces[0]>zFaces[1]) {
+			vFaces[0] = this.faces[0];
+		}
+		if(zFaces[0]<zFaces[1]) {
+			vFaces[0] = this.faces[1];
+		}
 	}
 
 }
