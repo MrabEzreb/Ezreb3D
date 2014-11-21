@@ -160,7 +160,7 @@ public class Camera extends XYZPoint {
 	 * @param c A cube
 	 * @return an array of polygons
 	 */
-	public Polygon[] getCubeShapes(Cube c) {
+	public Polygon[] getCubeShapes(CubeDep c) {
 		Polygon[] retVal = new Polygon[6];
 		XYZPoint[][] xyzs1 = new XYZPoint[6][4];
 		int[] noOfPolygons = new int[3];

@@ -1,114 +1,51 @@
+/**
+ * 
+ */
 package com.ezreb.ezreb3D;
 
-
 /**
- * @deprecated
- * @author Mrab Ezreb
+ * @author bram.zerbe
  *
  */
 public class Cube {
-	
+
 	/**
-	 * Side 1: +z
-	 * Side 2: +x
-	 * Side 3: +y
-	 * Side 4: -z
-	 * Side 5: -x
-	 * Side 6: -y
-	 * @author Mrab Ezreb
-	 * @param point1 top/forward/right point
-	 * @param point2 bottom/backward/left point
-	 * @param name the name of the cube
+	 * 
 	 */
-	public Cube(XYZPoint point1, XYZPoint point2, String name) {
-		firstPoint = point1;
-		secondPoint = point2;
-		xLength = -(firstPoint.X-point2.X);
-		yLength = -(firstPoint.Y-point2.Y);
-		zLength = -(firstPoint.Z-point2.Z);
-		this.name = name;
-		XYZPoint[][] p = new XYZPoint[7][5];
-		p[1][1] = firstPoint;
-		p[1][2] = new XYZPoint(xLength, 0, 0);
-		p[1][3] = new XYZPoint(xLength, yLength, 0);
-		p[1][4] = new XYZPoint(0, yLength, 0);
-		p[2][1] = firstPoint;
-		p[2][2] = new XYZPoint(0, 0, zLength);
-		p[2][3] = new XYZPoint(0, yLength, zLength);
-		p[2][4] = new XYZPoint(0, yLength, 0);
-		p[3][1] = firstPoint;
-		p[3][2] = new XYZPoint(xLength, 0, 0);
-		p[3][3] = new XYZPoint(xLength, 0, zLength);
-		p[3][4] = new XYZPoint(0, 0, zLength);
-		p[4][1] = secondPoint;
-		p[4][2] = new XYZPoint(xLength, 0, zLength);
-		p[4][3] = new XYZPoint(xLength, yLength, zLength);
-		p[4][4] = new XYZPoint(0, yLength, zLength);
-		p[5][1] = secondPoint;
-		p[5][2] = new XYZPoint(xLength, 0, zLength);
-		p[5][3] = new XYZPoint(xLength, yLength, zLength);
-		p[5][4] = new XYZPoint(xLength, yLength, 0);
-		p[6][1] = secondPoint;
-		p[6][2] = new XYZPoint(xLength, yLength, 0);
-		p[6][3] = new XYZPoint(xLength, yLength, zLength);
-		p[6][4] = new XYZPoint(0, yLength, zLength);
-		int x = xLength;
-		int y = yLength;
-		int z = zLength;
-		int q;
-		if(Math.abs(x)==x) {
-			if(Math.abs(y)==y) {
-				if(Math.abs(z)==z) {
-					q = 7;
-				} else {
-					q = 3;
-				}
-			} else {
-				if(Math.abs(z)==z) {
-					q = 6;
-				} else {
-					q = 2;
-				}
-			}
-		} else {
-			if(Math.abs(y)==y) {
-				if(Math.abs(z)==z) {
-					q = 8;
-				} else {
-					q = 4;
-				}
-			} else {
-				if(Math.abs(z)==z) {
-					q = 5;
-				} else {
-					q = 1;
-				}
-			}
-		}
-		this.originQuadrant = q;
-		this.allPoints = p;
+	public Cube(XYZPoint p1, int xLength, int yLength, int zLength) {
+		XYZPoint p3 = p1;
+		XYZPoint p2 = new XYZPoint(p1.X, p1.Y, p1.Z);
+		p2.X = p1.X+xLength;
+		p2.Y = p1.Y+yLength;
+		faces[0] = new Square(p1, p2);
+		p2.Z = p1.Z+zLength;
+		p3.Z = p1.Z+zLength;
+		faces[1] = new Square(p3, p2);
+		p2 = new XYZPoint(p1.X, p1.Y+yLength, p1.Z+zLength);
+		p3 = p1;
+		faces[2] = new Square(p3, p2);
+		p2.X = p1.X+xLength;
+		p3.X = p1.X+xLength;
+		faces[3] = new Square(p3, p2);
+		p2 = new XYZPoint(p1.X+xLength, p1.Y, p1.Z+zLength);
+		p3 = p1;
+		faces[4] = new Square(p3, p2);
+		p2.Y = p1.Y+yLength;
+		p3.Y = p1.Y+yLength;
+		faces[5] = new Square(p3, p2);
 	}
-	int originQuadrant;
-	XYZPoint firstPoint;
-	XYZPoint secondPoint;
-	XYZPoint[][] allPoints = new XYZPoint[7][5];
-	int xLength;
-	int yLength;
-	int zLength;
-	String name;
-	public int getxLength() {
-		return xLength;
+	Square[] faces = new Square[6];
+	public Square[] getVisibleSides(Camera c) {
+		Square[] vFaces = new Square[3];
+		int[] zFaces = new int[2];
+		int[] yFaces = new int[2];
+		int[] xFaces = new int[2];
+		zFaces[0] = this.faces[0].p1.getZ()-c.getZ();
+		zFaces[1] = this.faces[1].p1.getZ()-c.getZ();
+		yFaces[0] = this.faces[2].p1.getY()-c.getY();
+		yFaces[1] = this.faces[3].p1.getY()-c.getY();
+		xFaces[0] = this.faces[4].p1.getX()-c.getX();
+		xFaces[1] = this.faces[5].p1.getX()-c.getX();
 	}
-	public int getyLength() {
-		return yLength;
-	}
-	public int getzLength() {
-		return zLength;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+
 }

@@ -7,20 +7,20 @@ import java.awt.Polygon;
 import aleksPack10.tools.Colors;
 
 import com.ezreb.ezreb3D.Camera;
-import com.ezreb.ezreb3D.Cube;
+import com.ezreb.ezreb3D.CubeDep;
 import com.ezreb.ezreb3D.Window;
 import com.ezreb.ezreb3D.XYZPoint;
 
-public class Grid extends Cube {
+public class Grid extends CubeDep {
 	public Grid(XYZPoint point1, XYZPoint point2, int gridSize, String name, int windowsize) {
 		super(point1, point2, "Grid_"+name);
 		size = gridSize;
-		grid = new Cube[8][size][size][size];
+		grid = new CubeDep[8][size][size][size];
 		this.wsize = windowsize;
 	}
 	public int size;
 	public int wsize;
-	public Cube[][][][] grid;
+	public CubeDep[][][][] grid;
 	public void viewGrid() throws InterruptedException {
 		Frame grid = Window.create();
 		grid.setSize((wsize*2)+6,(wsize*2)+29);
@@ -35,10 +35,10 @@ public class Grid extends Cube {
 			}
 			System.out.println(i+"rot");
 			Camera c = new Camera(this, new XYZPoint(100, 100, 100), new XYZPoint(0, 0, 0), new XYZPoint(0, 0, 0));
-			Cube c2 = new Cube(new XYZPoint(0, 0, 0), new XYZPoint(75,75,50), "Cube1");
+			CubeDep c2 = new CubeDep(new XYZPoint(0, 0, 0), new XYZPoint(75,75,50), "Cube1");
 			//this.addCube(c2, new XYZPoint(0,0,0));
 			Polygon[] shape1 = c.getCubeShapes(c2);
-			Cube c1 = new Cube(new XYZPoint(0, 0, 0), new XYZPoint(-10, -10, -10), "Cube 1");
+			CubeDep c1 = new CubeDep(new XYZPoint(0, 0, 0), new XYZPoint(-10, -10, -10), "Cube 1");
 			//this.addCube(c1, new XYZPoint(0, 0, 0));
 			Polygon[] p1 = c.getCubeShapes(c1);
 			int size = this.size;
@@ -167,7 +167,7 @@ public class Grid extends Cube {
 		retVal.setAll(xVal, yVal, zVal);
 		return retVal;
 	}
-	public void addCube(Cube cube, XYZPoint point) {
+	public void addCube(CubeDep cube, XYZPoint point) {
 		int x = point.getX();
 		int y = point.getY();
 		int z = point.getZ();
