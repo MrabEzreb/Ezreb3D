@@ -7,7 +7,9 @@ import java.awt.Polygon;
 import aleksPack10.tools.Colors;
 
 import com.ezreb.ezreb3D.Camera;
+import com.ezreb.ezreb3D.Cube;
 import com.ezreb.ezreb3D.CubeDep;
+import com.ezreb.ezreb3D.Square;
 import com.ezreb.ezreb3D.Window;
 import com.ezreb.ezreb3D.XYZPoint;
 
@@ -35,12 +37,12 @@ public class Grid extends CubeDep {
 			}
 			System.out.println(i+"rot");
 			Camera c = new Camera(this, new XYZPoint(100, 100, 100), new XYZPoint(0, 0, 0), new XYZPoint(0, 0, 0));
-			CubeDep c2 = new CubeDep(new XYZPoint(0, 0, 0), new XYZPoint(75,75,50), "Cube1");
+			Cube c2 = new Cube(new XYZPoint(1, 1, 1), 10, 10, 10);
 			//this.addCube(c2, new XYZPoint(0,0,0));
-			Polygon[] shape1 = c.getCubeShapes(c2);
-			CubeDep c1 = new CubeDep(new XYZPoint(0, 0, 0), new XYZPoint(-10, -10, -10), "Cube 1");
+			//Square[] shape1 = c2.getVisibleSides(c);
+			//CubeDep c1 = new CubeDep(new XYZPoint(0, 0, 0), new XYZPoint(-10, -10, -10), "Cube 1");
 			//this.addCube(c1, new XYZPoint(0, 0, 0));
-			Polygon[] p1 = c.getCubeShapes(c1);
+			Polygon[] p1 = c2.getRender(c);
 			int size = this.size;
 			XYZPoint xp = c.getPoint(new XYZPoint(size,0,0));
 			//System.out.println("xp="+xp.getX()+","+xp.getY()+","+xp.getZ());
@@ -54,11 +56,11 @@ public class Grid extends CubeDep {
 			Thread.sleep(50);
 			graph.clearRect(0,0,wsize*2+6,wsize*2+28);
 			graph.setColor(Colors.green1);
-			//this.fill3DPolygon(p1, graph);
+			this.fill3DPolygon(p1, graph);
 			//this.fill3DPolygon(shape1, graph);
 			graph.setColor(Colors.brown0);
 			//this.draw3DPolygon(shape1, graph);
-			//this.draw3DPolygon(p1, graph);
+			this.draw3DPolygon(p1, graph);
 			graph.setColor(Colors.blue2);
 			graph.drawLine(xp.getX(), xp.getY(), origin.getX(), origin.getY());
 			graph.drawLine(xn.getX(), xn.getY(), origin.getX(), origin.getY());
