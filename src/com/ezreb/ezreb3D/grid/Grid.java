@@ -36,7 +36,7 @@ public class Grid extends CubeDep {
 				continue;
 			}
 			System.out.println(i+"rot");
-			Camera c = new Camera(this, new XYZPoint(50, 5, -50), new XYZPoint(0, i, 0), new XYZPoint(0,0, 0));
+			Camera c = new Camera(this, new XYZPoint(5, 5, 150), new XYZPoint(0, 0, 0), new XYZPoint(0,0, 0));
 			Cube c2 = new Cube(new XYZPoint(1, 1, 1), 10, 10, 10);
 			Cube c3 = new Cube(new XYZPoint(50,10,50), 20, 20, 20);
 			//this.addCube(c2, new XYZPoint(0,0,0));
