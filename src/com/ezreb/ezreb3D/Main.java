@@ -6,8 +6,8 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 		Grid g = new Grid(new XYZPoint(0, 0, 0), new XYZPoint(150,150,150), 150, "Number One", 300);
-		while(true) {
+		//while(true) {
 			g.viewGrid();
-		}
+		//}
 	}
 }
