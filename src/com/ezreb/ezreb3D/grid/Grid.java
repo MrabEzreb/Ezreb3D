@@ -29,22 +29,20 @@ public class Grid extends CubeDep {
 		grid.setVisible(true);
 		Graphics2D graph = (Graphics2D) grid.getGraphics();
 		graph.drawRect(0, 0, 5, 5);
-		for (int i = 0; i < 361; i = i+2) {
+		for (int i = -150; i < 151; i = i+2) {
 			if(i==0) {
 				continue;
 			} else if(i==1) {
 				continue;
 			}
 			System.out.println(i+"rot");
-			Camera c = new Camera(this, new XYZPoint(5, 5, 150), new XYZPoint(0, 0, 0), new XYZPoint(0,0, 0));
+			Camera c = new Camera(this, new XYZPoint(i, Math.abs(i), 100), new XYZPoint(0, 0, 0), new XYZPoint(0,0,0));
 			Cube c2 = new Cube(new XYZPoint(1, 1, 1), 10, 10, 10);
-			Cube c3 = new Cube(new XYZPoint(50,10,50), 20, 20, 20);
 			//this.addCube(c2, new XYZPoint(0,0,0));
 			//Square[] shape1 = c2.getVisibleSides(c);
 			//CubeDep c1 = new CubeDep(new XYZPoint(0, 0, 0), new XYZPoint(-10, -10, -10), "Cube 1");
 			//this.addCube(c1, new XYZPoint(0, 0, 0));
 			Polygon[] p1 = c2.getRender(c);
-			Polygon[] p2 = c3.getRender(c);
 			int size = this.size;
 			XYZPoint xp = c.getPoint(new XYZPoint(size,0,0));
 			//System.out.println("xp="+xp.getX()+","+xp.getY()+","+xp.getZ());
@@ -60,13 +58,11 @@ public class Grid extends CubeDep {
 			graph.setColor(Colors.green1);
 			this.fill3DPolygon(p1, graph);
 			graph.setColor(Colors.brown0);
-			this.fill3DPolygon(p2, graph);
 			//this.fill3DPolygon(shape1, graph);
 			graph.setColor(Colors.brown0);
 			//this.draw3DPolygon(shape1, graph);
 			this.draw3DPolygon(p1, graph);
 			graph.setColor(Colors.green1);
-			this.draw3DPolygon(p2, graph);
 			graph.setColor(Colors.blue2);
 			graph.drawLine(xp.getX(), xp.getY(), origin.getX(), origin.getY());
 			graph.drawLine(xn.getX(), xn.getY(), origin.getX(), origin.getY());

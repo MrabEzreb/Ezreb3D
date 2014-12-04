@@ -29,21 +29,32 @@ public class Square {
 	public XYZPoint p25;
 	public Polygon getRender(Camera c) {
 		Polygon retVal;
-		XYZPoint[] zes = new XYZPoint[4];
+		Line[] sides = new Line[4];
+		sides[0] = new Line(p1, p15);
+		sides[1] = new Line(p15, p2);
+		sides[2] = new Line(p2, p25);
+		sides[3] = new Line(p25, p1);
+		Polygon[] zes = new Polygon[4];
+		for (Line line : sides) {
+			line.to2D(c);
+		}
+		for (int i = 0; i < zes.length; i++) {
+			zes[i] = sides[i].getRender(c);
+		}
 		int[] xes = new int[4];
 		int[] yes = new int[4];
-		zes[0] = c.getPoint(p1);
-		zes[1] = c.getPoint(p15);
-		zes[2] = c.getPoint(p2);
-		zes[3] = c.getPoint(p25);
-		xes[0] = zes[0].getX();
-		yes[0] = zes[0].getY();
-		xes[1] = zes[1].getX();
-		yes[1] = zes[1].getY();
-		xes[2] = zes[2].getX();
-		yes[2] = zes[2].getY();
-		xes[3] = zes[3].getX();
-		yes[3] = zes[3].getY();
+		for (int i = 0; i < 4; i++) {
+			if(i==0) {
+				xes[0] = zes[0].xpoints[0];
+				yes[0] = zes[0].ypoints[0];
+			} else {
+				for (int j = 0; j < 2; j++) {
+					if(zes[i].xpoints[j]==zes[i-1].xpoints[j]) {
+						xes[i] = zes[i].xpoints[j];
+					}
+				}
+			}
+		}
 		retVal = new Polygon(xes, yes, 4);
 		return retVal;
 	}

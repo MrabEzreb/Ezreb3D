@@ -184,5 +184,87 @@ public class Camera extends XYZPoint {
 		}
 		return retVal;
 	}
+	public Line getLine(Line l) {
+		XYZPoint p1 = this.getPoint(l.p1);
+		XYZPoint p2 = this.getPoint(l.p2);
+		int p1x;
+		int p2x;
+		int p1y;
+		int p2y;
+		int p1z;
+		int p2z;
+		XYZPoint p12;
+		XYZPoint p22;
+		if(p1.X>p2.X) {
+			p1x = p1.X;
+			p1y = p1.Y;
+			p1z = p1.Z;
+			p2x = p2.X;
+			p2y = p2.Y;
+			p2z = p2.Z;
+			p12 = p1;
+			p22 = p2;
+		} else {
+			p1x = p2.X;
+			p1y = p2.Y;
+			p1z = p2.Z;
+			p2x = p1.X;
+			p2y = p1.Y;
+			p2z = p1.Z;
+			p12 = p2;
+			p22 = p1;
+		}
+		int[] points = {p1x,p1y,p2x,p2y};
+		int dy = p2y-p1y;
+		int dx = p2x-p1x;
+		boolean pos;
+		if(Math.abs(dy)!=dy && Math.abs(dx)!=dx) {
+			dy = Math.abs(dy);
+			dx = Math.abs(dx);
+		} else if(Math.abs(dy)==dy && Math.abs(dx)!=dx) {
+			dy = 0-dy;
+			dx = Math.abs(dx);
+		}
+		if(Math.abs(dy)==dy){
+			pos = true;
+		} else {
+			pos = false;
+		}
+		int current = 0;
+		Line retVal = new Line(1,1,1,1);
+		for (int i : points) {
+			if(i>0 && i<this.grid.wsize) {
+				current++;
+			} else if(i<1) {
+				if(current<2) {
+					p12.X = 1;
+					p12.Y = 1;
+					p22.X = 1;
+					p22.Y = 1;
+					break;
+				} else {
+					//while(p22.X<1 || p22.Y<1) {
+						p22.X = p22.X + dx;
+						p22.Y = p22.Y + dy;
+					//}
+				}
+			} else if(i>this.grid.wsize) {
+				if(current>1) {
+					p12.X = 1;
+					p12.Y = 1;
+					p22.X = 1;
+					p22.Y = 1;
+					break;
+				} else {
+					//while(p12.X>this.grid.wsize || p12.Y>this.grid.wsize) {
+						p12.X = p12.X - dx;
+						p12.Y = p12.Y - dy;
+					//}
+				}
+			}
+		}
+		retVal = new Line(p12.X,p12.Y,p22.X,p22.Y);
+		return retVal;
+	}
 	
 }
